@@ -6,12 +6,11 @@ import { useEffect } from "react";
 import { authInRequest } from "../../store/modules/auth/actions";
 import { useNavigate } from "react-router-dom";
 
-const schema = z.object({
-  email: z.string().email("Digite um Email válido!"),
-  password: z.string().min(6, "A senha precisa ter pelo menos 6 caracteres!"),
-});
-
 const Login = () => {
+  const schema = z.object({
+    email: z.string().email("Digite um Email válido!"),
+    password: z.string().min(6, "A senha precisa ter pelo menos 6 caracteres!"),
+  });
   const {
     register,
     handleSubmit,
@@ -22,13 +21,11 @@ const Login = () => {
   });
 
   const navigate = useNavigate();
-  const store = useSelector((store) => store.user);
+  const store = useSelector((store) => store.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (store?.signed) {
-      navigate("/produtos");
-    }
+    if (store?.signed) navigate("/home");
   }, [store]);
 
   const loginRequest = (data) => {

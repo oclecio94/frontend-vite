@@ -16,7 +16,7 @@ export default function auth(state = INITIAL_STATE, action) {
         break;
       }
       case "@auth/AUTH_IN_SUCCESS": {
-        draft.loading = true;
+        draft.signed = true;
         draft.token = payload.token;
         draft.error = false;
         draft.loading = false;

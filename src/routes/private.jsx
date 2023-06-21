@@ -1,8 +1,15 @@
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
+import { NavigateComponent } from "../components";
 
 export const Private = ({ Component }) => {
-  const inSigned = useSelector((state) => state.auth.signed);
+  const isSigned = useSelector((state) => state.auth.signed);
 
-  return isSigned ? <Component /> : <Navigate to="/" />;
+  return isSigned ? (
+    <NavigateComponent>
+      <Component />
+    </NavigateComponent>
+  ) : (
+    <Navigate to="/" />
+  );
 };
