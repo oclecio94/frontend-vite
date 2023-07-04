@@ -8,7 +8,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 const FormUser = () => {
   const schema = z.object({
-    name: z.string("Campo obrigatório!"),
+    name: z
+      .string("Campo obrigatório!")
+      .min(4, "O nome precisa ter pelo menos 4 letras!"),
     email: z.string().email("Digite um Email válido!"),
     password: z.string().min(6, "A senha precisa ter pelo menos 6 caracteres!"),
   });
@@ -38,141 +40,181 @@ const FormUser = () => {
   //{errors?.email?.message && <p>{errors.name.message}</p>}
 
   return (
-    <div className="flex justify-center items-center h-screen bg-indigo-600">
-      <form
-        onSubmit={handleSubmit}
-        className="w-96 p-6 shadow-lg bg-white rounded-md"
-      >
-        <h1 className="text-3xl block text-center font-semibold">Cadastro</h1>
-        <hr className="mt-3" />
-        <div className="mt-3">
-          <label htmlFor="name" className="block text-base mb-2">
+    <form
+      onClick={handleSubmit}
+      className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2"
+    >
+      <div className="-mx-3 md:flex mb-2">
+        <div className="md:w-1/2 px-3 mb-2 md:mb-0">
+          <label
+            className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+            htmlFor="name"
+          >
             Nome
           </label>
           <input
             {...register("name")}
-            type="text"
+            className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3"
             id="name"
+            type="text"
             name="name"
-            className="border w-full text-base px-2 py-1 focus:outline-none focus:ring-0 focus:border-gray-600"
+            placeholder="..."
           />
           {errors?.name?.message && (
             <p className="text-red-500">{errors.name.message}</p>
           )}
         </div>
-        <div className="mt-3">
-          <label htmlFor="email" className="block text-base mb-2">
+        <div className="md:w-1/2 px-3">
+          <label
+            className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+            htmlFor="email"
+          >
             Email
           </label>
           <input
             {...register("email")}
-            type="email"
+            className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
             id="email"
+            type="email"
             name="email"
-            className="border w-full text-base px-2 py-1 focus:outline-none focus:ring-0 focus:border-gray-600"
+            placeholder="..."
           />
           {errors?.email?.message && (
             <p className="text-red-500">{errors.email.message}</p>
           )}
         </div>
-        <div className="mt-3">
-          <label htmlFor="password" className="block text-base mb-2">
+      </div>
+      <div className="-mx-3 md:flex mb-2">
+        <div className="md:w-1/2 px-3 mb-2 md:mb-0">
+          <label
+            className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+            htmlFor="password"
+          >
             Senha
           </label>
           <input
             {...register("password")}
-            type="password"
+            className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3"
             id="password"
+            type="password"
             name="password"
-            className="border w-full text-base px-2 py-1 focus:outline-none focus:ring-0 focus:border-gray-600"
+            placeholder="..."
           />
           {errors?.password?.message && (
             <p className="text-red-500">{errors.password.message}</p>
           )}
         </div>
-        <div className="mt-3">
-          <label htmlFor="phone" className="block text-base mb-2">
+        <div className="md:w-1/2 px-3">
+          <label
+            className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+            htmlFor="phone"
+          >
             Telefone
           </label>
           <input
-            type="number"
+            className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
             id="phone"
-            name="phone"
-            className="border w-full text-base px-2 py-1 focus:outline-none focus:ring-0 focus:border-gray-600"
-          />
-        </div>
-        <div className="mt-3">
-          <label htmlFor="location" className="block text-base mb-2">
-            CEP
-          </label>
-          <input
             type="number"
-            id="location"
-            name="location"
-            className="border w-full text-base px-2 py-1 focus:outline-none focus:ring-0 focus:border-gray-600"
+            name="phone"
+            placeholder="..."
           />
         </div>
-        <div className="mt-3">
-          <label htmlFor="addres" className="block text-base mb-2">
+      </div>
+      <div className="-mx-3 md:flex mb-2">
+        <div className="md:w-1/2 px-3 mb-2 md:mb-0">
+          <label
+            className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+            htmlFor="addres"
+          >
             Endereço
           </label>
           <input
-            type="text"
+            className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3"
             id="addres"
+            type="text"
             name="addres"
-            className="border w-full text-base px-2 py-1 focus:outline-none focus:ring-0 focus:border-gray-600"
+            placeholder="..."
           />
         </div>
-        <div className="mt-3">
-          <label htmlFor="number" className="block text-base mb-2">
+        <div className="md:w-1/2 px-3">
+          <label
+            className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+            htmlFor="location"
+          >
+            CEP
+          </label>
+          <input
+            className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
+            id="location"
+            type="number"
+            name="location"
+            placeholder="..."
+          />
+        </div>
+      </div>
+
+      <div className="-mx-3 md:flex mb-2">
+        <div className="md:w-1/2 px-3 mb-2 md:mb-0">
+          <label
+            className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+            htmlFor="number"
+          >
             Numero
           </label>
           <input
-            type="number"
+            className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
             id="number"
+            type="number"
             name="number"
-            className="border w-full text-base px-2 py-1 focus:outline-none focus:ring-0 focus:border-gray-600"
+            placeholder="number"
           />
         </div>
-        <div className="mt-3">
-          <label htmlFor="state" className="block text-base mb-2">
+        <div className="md:w-1/2 px-3">
+          <label
+            className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+            htmlFor="state"
+          >
             Estado
           </label>
           <input
-            type="text"
+            className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
             id="state"
+            type="text"
             name="state"
-            className="border w-full text-base px-2 py-1 focus:outline-none focus:ring-0 focus:border-gray-600"
+            placeholder="..."
           />
         </div>
-        <div className="mt-3">
-          <label htmlFor="city" className="block text-base mb-2">
+        <div className="md:w-1/2 px-3">
+          <label
+            className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+            htmlFor="city"
+          >
             Cidade
           </label>
           <input
-            type="text"
+            className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
             id="city"
+            type="text"
             name="city"
-            className="border w-full text-base px-2 py-1 focus:outline-none focus:ring-0 focus:border-gray-600"
+            placeholder="..."
           />
         </div>
-
-        <div className="flex mt-5">
-          <button
-            type="submit"
-            className="border-2 border-indigo-700 bg-indigo-700 text-white py-1 w-full rounded-md hover:bg-transparent hover:text-indigo-700 font-semibold"
-          >
-            Voltar
-          </button>
-          <button
-            type="submit"
-            className="border-2 border-indigo-700 bg-indigo-700 text-white py-1 w-full rounded-md hover:bg-transparent hover:text-indigo-700 font-semibold"
-          >
-            Salvar
-          </button>
-        </div>
-      </form>
-    </div>
+      </div>
+      <div className="flex justify-center gap-2">
+        <button
+          type="submit"
+          className="border-2 bg-purple-500 text-white py-1 w-20 rounded-md hover:bg-transparent hover:text-purple-500 font-semibold"
+        >
+          Voltar
+        </button>
+        <button
+          type="submit"
+          className="border-2 bg-green-500 text-white py-1 w-20 rounded-md hover:bg-transparent hover:text-green-500 font-semibold"
+        >
+          Salvar
+        </button>
+      </div>
+    </form>
   );
 };
 
