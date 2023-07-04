@@ -3,6 +3,7 @@ import { Private } from "./private";
 import Home from "../pages/home/index.jsx";
 import Login from "../pages/login/index.jsx";
 import Users from "../pages/users/index.jsx";
+import FormUser from "../pages/users/form";
 
 export const RoutesComponent = () => {
   return (
@@ -10,6 +11,10 @@ export const RoutesComponent = () => {
       <Route path="/" element={<Login />} />
       <Route path="/home" element={<Private Component={Home} />} />
       <Route path="/usuarios" element={<Private Component={Users} />} />
+      <Route
+        path="/usuarios/formulario"
+        element={<Private Component={FormUser} />}
+      />
     </Routes>
   );
 };

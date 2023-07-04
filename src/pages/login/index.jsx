@@ -38,11 +38,9 @@ const Login = () => {
       <div className="container px-5 py-24 mx-auto flex flex-wrap items-center">
         <div className="lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0 pr-0">
           <h1 className="title-font font-medium text-3xl text-gray-900">
-            Sistema Front End
+            SAAS
           </h1>
-          <p className="leading-relaxed mt-4">
-            Entre para ter acesso aos nossos inumeros serviços!
-          </p>
+          <p className="leading-relaxed mt-4">Faça o login para continuar!</p>
         </div>
         <form
           onSubmit={handleSubmit(loginRequest)}
@@ -62,7 +60,9 @@ const Login = () => {
               name="email"
               className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             />
-            {errors?.email?.message && <p>{errors.email.message}</p>}
+            {errors?.email?.message && (
+              <p className="text-sm text-red-500">{errors.email.message}</p>
+            )}
           </div>
           <div className="relative mb-4">
             <label
@@ -78,7 +78,9 @@ const Login = () => {
               name="password"
               className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             />
-            {errors?.password?.message && <p>{errors.password.message}</p>}
+            {errors?.password?.message && (
+              <p className="text-sm text-red-500">{errors.password.message}</p>
+            )}
           </div>
           <button
             type="submit"

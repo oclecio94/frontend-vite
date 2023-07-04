@@ -4,6 +4,7 @@ import { store, persistor } from "./store/store";
 import { BrowserRouter } from "react-router-dom";
 import { RoutesComponent } from "./routes";
 import { Toaster } from "react-hot-toast";
+import "bulma/css/bulma.min.css";
 
 export default function App() {
   return (
