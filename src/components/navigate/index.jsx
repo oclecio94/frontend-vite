@@ -14,7 +14,7 @@ const NavigateComponent = ({ children }) => {
     <div className="flex">
       <div
         style={{ width: isOpen ? "200px" : "50px" }}
-        className="bg-purple-700 text-white md:h-screen w-[200px] transition-all duration-75"
+        className="bg-purple-700 text-white h-screen md:h-screen w-[200px] transition-all duration-75"
       >
         <div className="flex items-center p-4 justify-between">
           <h1
