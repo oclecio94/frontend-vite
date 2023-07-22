@@ -4,6 +4,8 @@ import Home from "../pages/home/index.jsx";
 import Login from "../pages/login/index.jsx";
 import Users from "../pages/users/index.jsx";
 import FormUser from "../pages/users/form";
+import Client from "../pages/clients";
+import FormClient from "../pages/clients/form";
 
 export const RoutesComponent = () => {
   return (
@@ -14,6 +16,11 @@ export const RoutesComponent = () => {
       <Route
         path="/usuarios/formulario"
         element={<Private Component={FormUser} />}
+      />
+      <Route path="/clientes" element={<Private Component={Client} />} />
+      <Route
+        path="/clientes/formulario"
+        element={<Private Component={FormClient} />}
       />
     </Routes>
   );

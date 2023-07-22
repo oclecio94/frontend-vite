@@ -52,7 +52,7 @@ export const removeUser = async (
 ) => {
   toast.loading("Removendo usuário!");
   try {
-    await api.delete(`user/${id}`);
+    await api.delete(`/user/${id}`);
     toast.dismiss();
     setRemove(false);
     toast.success("Usuário removido com sucesso!");
@@ -61,5 +61,26 @@ export const removeUser = async (
   } catch (e) {
     toast.dismiss();
     toast.error("Não foi possível remover o usuário!");
+  }
+};
+
+export const alterStatusAndAdmin = async (
+  id,
+  data,
+  dispatch,
+  skip,
+  take,
+  search
+) => {
+  toast.loading("Salvando usuário!");
+
+  try {
+    await api.put(`/user/${id}`, data);
+    toast.dismiss();
+    toast.success("Usuário editado com sucesso!");
+    dispatch(usersInRequest(skip, take, search));
+  } catch (e) {
+    toast.dismiss();
+    toast.error("Não foi possível editar o usuário!");
   }
 };

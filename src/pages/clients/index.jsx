@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { HeaderComponent, ModalDelete } from "../../components";
 import { useSelector, useDispatch } from "react-redux";
-import { usersInRequest } from "../../store/modules/users/actions";
+import { clientInRequest } from "../../store/modules/clients/actions";
 import { Pagination } from "react-bulma-components";
 import { useNavigate } from "react-router-dom";
-import { removeUser, alterStatusAndAdmin } from "./requests";
+import { removeClient } from "./requests";
 import { pagination } from "../../utils/pagination";
 
-const Users = () => {
+const Clients = () => {
   const [search, setSearch] = useState("");
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(20);
@@ -16,10 +16,10 @@ const Users = () => {
   const [remove, setRemove] = useState();
 
   const dispatch = useDispatch();
-  const state = useSelector((state) => state.users);
+  const state = useSelector((state) => state.clients);
 
   useEffect(() => {
-    dispatch(usersInRequest(skip, limit, search));
+    dispatch(clientInRequest(skip, limit, search));
   }, [search, skip, limit]);
 
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ const Users = () => {
   };
 
   const deleteUser = () => {
-    removeUser(id, setRemove, dispatch, skip, limit, search);
+    removeClient(id, setRemove, dispatch, skip, limit, search);
   };
 
   const clickRemove = (id) => {
@@ -37,24 +37,14 @@ const Users = () => {
     setRemove(true);
   };
 
-  const alterStatus = (id, value) => {
-    const data = { status: value };
-    alterStatusAndAdmin(id, data, dispatch, skip, limit, search);
-  };
-
-  const alterAdmin = (id, value) => {
-    const data = { master: value };
-    alterStatusAndAdmin(id, data, dispatch, skip, limit, search);
-  };
-
   return (
     <main>
       <HeaderComponent
-        title="Usuários"
+        title="Clientes"
         placeholder="pesquisar..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        route="/usuarios/formulario"
+        route="/clientes/formulario"
       />
 
       <div className="flex flex-col">
@@ -73,20 +63,15 @@ const Users = () => {
                     <th scope="col" className="px-5 py-4">
                       Telefone
                     </th>
-                    <th scope="col" className="px-5 py-4">
-                      Admin
-                    </th>
-                    <th scope="col" className="px-5 py-4">
-                      Status
-                    </th>
+
                     <th scope="col" className="px-5 py-4">
                       Ações
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {state?.data?.users?.length && !state.loading
-                    ? state.data.users.map((data, i) => (
+                  {state?.data?.clients?.length && !state.loading
+                    ? state.data.clients.map((data, i) => (
                         <tr
                           key={i}
                           className="border-b dark:border-neutral-500"
@@ -100,33 +85,7 @@ const Users = () => {
                           <td className="whitespace-nowrap px-5 py-4 font-medium">
                             {data.phone ? data.phone : "--"}
                           </td>
-                          <td className="whitespace-nowrap px-5 py-4 font-medium">
-                            <span className="relative inline-block px-3 py-1 font-semibold leading-tight text-green-900">
-                              <input
-                                onClick={(ev) =>
-                                  alterAdmin(data.id, ev.target.checked)
-                                }
-                                checked={data.master}
-                                type="checkbox"
-                                //   aria-hidden="true"
-                                className="inset-0 bg-green-200 rounded-full opacity-50"
-                              />
-                              <span className="relative">Admin</span>
-                            </span>
-                          </td>
-                          <td className="whitespace-nowrap px-5 py-4 font-medium">
-                            <span className="relative inline-block px-3 py-1 font-semibold leading-tight text-green-900">
-                              <input
-                                onClick={(ev) =>
-                                  alterStatus(data.id, ev.target.checked)
-                                }
-                                checked={data.status}
-                                type="checkbox"
-                                className="inset-0 bg-green-200 rounded-full opacity-50"
-                              />
-                              <span className="relative">Ativo</span>
-                            </span>
-                          </td>
+
                           <td className="flex whitespace-nowrap px-5 py-4">
                             <a
                               onClick={() => clickRemove(data.id)}
@@ -149,7 +108,7 @@ const Users = () => {
                             </a>
                             <a
                               onClick={() =>
-                                navigate("/usuarios/formulario", {
+                                navigate("/clientes/formulario", {
                                   state: { id: data.id },
                                 })
                               }
@@ -192,8 +151,8 @@ const Users = () => {
         <ModalDelete
           open={remove}
           close={() => setRemove(false)}
-          title="Remover Usuário"
-          text="Tem certeza que deseja remover esse usuário?"
+          title="Remover Cliente"
+          text="Tem certeza que deseja remover esse cliente?"
           confirm={deleteUser}
         />
       )}
@@ -201,4 +160,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Clients;

@@ -1,39 +1,28 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createUser, getById, updateUser } from "./requests";
+import { createClient, getById, updateClient } from "./requests";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
-const FormUser = () => {
+const FormClient = () => {
   const user = useSelector((state) => state.user.data);
   const { state } = useLocation();
   const navigate = useNavigate();
 
   const schema = z.object({
     name: z.string().min(4, "O nome precisa ter pelo menos 4 letras!"),
-    email: z.string().email("Digite um Email válido!"),
-    password: z.string().min(6, "A senha precisa ter pelo menos 6 caracteres!"),
+    email: z.string().or(z.literal("")),
     phone: z.string().or(z.literal("")),
     address: z.string().or(z.literal("")),
     number: z.string().or(z.literal("")),
     city: z.string().or(z.literal("")),
     state: z.string().or(z.literal("")),
     cep: z.string().or(z.literal("")),
+    cpf: z.string().or(z.literal("")),
+    rg: z.string().or(z.literal("")),
   });
-
-  const schemaUpdate = z.object({
-    name: z.string().min(4, "O nome precisa ter pelo menos 4 letras!"),
-    email: z.string().email("Digite um Email válido!"),
-    phone: z.string().or(z.literal("")),
-    address: z.string().or(z.literal("")),
-    number: z.string().or(z.literal("")),
-    city: z.string().or(z.literal("")),
-    state: z.string().or(z.literal("")),
-    cep: z.string().or(z.literal("")),
-  });
-
   const {
     register,
     handleSubmit,
@@ -41,12 +30,12 @@ const FormUser = () => {
     setValue,
   } = useForm({
     mode: "all",
-    resolver: zodResolver(!state?.id ? schema : schemaUpdate),
+    resolver: zodResolver(schema),
   });
 
   useEffect(() => {
     if (state?.id) {
-      const getUser = async () => {
+      const getClient = async () => {
         const res = await getById(state.id);
         setValue("address", res.address);
         setValue("cep", res.cep);
@@ -55,25 +44,30 @@ const FormUser = () => {
         setValue("name", res.name);
         setValue("number", res.number);
         setValue("phone", res.phone);
+        setValue("cpf", res.cpf);
+        setValue("rg", res.rg);
         setValue("state", res.state);
       };
-      getUser();
+      getClient();
     }
   }, []);
 
   const save = (data) => {
+    console.log(data);
+    console.log(data);
+    console.log(data);
     if (!state?.id) {
-      data.masterId = user.id;
-      createUser(data, navigate);
+      data.userId = user.masterId;
+      createClient(data, navigate);
     } else {
-      updateUser(state.id, data, navigate);
+      updateClient(state.id, data, navigate);
     }
   };
 
   return (
     <main>
       <h1 className="mb-2 text-2xl font-bold">
-        {state?.id ? "Editar Usuário" : "Adicionar Usuário"}
+        {state?.id ? "Editar Cliente" : "Adicionar Cliente"}
         {""}
       </h1>
       <form
@@ -115,31 +109,9 @@ const FormUser = () => {
               name="email"
               placeholder="..."
             />
-            {errors?.email?.message && (
-              <p className="text-red-500">{errors.email.message}</p>
-            )}
           </div>
         </div>
         <div className="-mx-3 md:flex mb-2">
-          <div className="md:w-1/2 px-3 mb-2 md:mb-0">
-            <label
-              className="block uppercase tracking-wide text-xs font-bold mb-2"
-              htmlFor="password"
-            >
-              Senha
-            </label>
-            <input
-              {...register("password")}
-              className="appearance-none block w-full border border-red rounded py-1 px-2 mb-1"
-              id="password"
-              type="password"
-              name="password"
-              placeholder="..."
-            />
-            {errors?.password?.message && (
-              <p className="text-red-500">{errors.password.message}</p>
-            )}
-          </div>
           <div className="md:w-1/2 px-3">
             <label
               className="block uppercase tracking-wide text-xs font-bold mb-2"
@@ -156,9 +128,41 @@ const FormUser = () => {
               placeholder="..."
             />
           </div>
+          <div className="md:w-1/2 px-3 mb-2 md:mb-0">
+            <label
+              className="block uppercase tracking-wide text-xs font-bold mb-2"
+              htmlFor="rg"
+            >
+              RG
+            </label>
+            <input
+              {...register("rg")}
+              className="appearance-none block w-full border border-red rounded py-1 px-2 mb-1"
+              id="rg"
+              type="number"
+              name="rg"
+              placeholder="..."
+            />
+          </div>
         </div>
         <div className="-mx-3 md:flex mb-2">
           <div className="md:w-1/2 px-3 mb-2 md:mb-0">
+            <label
+              className="block uppercase tracking-wide text-xs font-bold mb-2"
+              htmlFor="cpf"
+            >
+              CPF
+            </label>
+            <input
+              {...register("cpf")}
+              className="appearance-none block w-full border border-red rounded py-1 px-2 mb-1"
+              id="cpf"
+              type="number"
+              name="cpf"
+              placeholder="..."
+            />
+          </div>
+          <div className="md:w-1/2 px-3">
             <label
               className="block uppercase tracking-wide text-xs font-bold mb-2"
               htmlFor="address"
@@ -167,10 +171,28 @@ const FormUser = () => {
             </label>
             <input
               {...register("address")}
-              className="appearance-none block w-full border border-red rounded py-1 px-2 mb-1"
+              className="appearance-none block w-full border border-grey-lighter rounded py-1 px-2 mb-1"
               id="address"
               type="text"
               name="address"
+              placeholder="..."
+            />
+          </div>
+        </div>
+        <div className="-mx-3 md:flex mb-2">
+          <div className="md:w-1/2 px-3 mb-2 md:mb-0">
+            <label
+              className="block uppercase tracking-wide text-xs font-bold mb-2"
+              htmlFor="number"
+            >
+              Numero
+            </label>
+            <input
+              {...register("number")}
+              className="appearance-none block w-full border border-red rounded py-1 px-2 mb-1"
+              id="number"
+              type="number"
+              name="number"
               placeholder="..."
             />
           </div>
@@ -191,25 +213,8 @@ const FormUser = () => {
             />
           </div>
         </div>
-
         <div className="-mx-3 md:flex mb-2">
           <div className="md:w-1/2 px-3 mb-2 md:mb-0">
-            <label
-              className="block uppercase tracking-wide  text-xs font-bold mb-2"
-              htmlFor="number"
-            >
-              Numero
-            </label>
-            <input
-              {...register("number")}
-              className="appearance-none block w-full border border-grey-lighter rounded py-1 px-2 mb-1"
-              id="number"
-              type="number"
-              name="number"
-              placeholder="..."
-            />
-          </div>
-          <div className="md:w-1/2 px-3">
             <label
               className="block uppercase tracking-wide text-xs font-bold mb-2"
               htmlFor="state"
@@ -218,7 +223,7 @@ const FormUser = () => {
             </label>
             <input
               {...register("state")}
-              className="appearance-none block w-full border border-grey-lighter rounded py-1 px-2 mb-1"
+              className="appearance-none block w-full border border-red rounded py-1 px-2 mb-1"
               id="state"
               type="text"
               name="state"
@@ -242,9 +247,10 @@ const FormUser = () => {
             />
           </div>
         </div>
+
         <div className="flex justify-center gap-2">
           <button
-            onClick={() => navigate("/usuarios")}
+            onClick={() => navigate("/clientes")}
             className="border-2 bg-purple-500 text-white py-1 w-20 rounded-md hover:bg-transparent hover:text-purple-500 font-semibold"
           >
             Voltar
@@ -261,4 +267,4 @@ const FormUser = () => {
   );
 };
 
-export default FormUser;
+export default FormClient;
